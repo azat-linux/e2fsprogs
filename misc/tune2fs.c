@@ -183,7 +183,7 @@ static __u32 clear_ok_features[3] = {
 /**
  * Try to get journal super block if any
  */
-static int get_journal_sb(ext2_filsys jfs, char buf[SUPERBLOCK_SIZE])
+static int get_journal_sb(ext2_filsys jfs, char buf[EXT2_SUPERBLOCK_SIZE])
 {
 	int retval;
 	int start;
@@ -196,7 +196,7 @@ static int get_journal_sb(ext2_filsys jfs, char buf[SUPERBLOCK_SIZE])
 
 	/* Get the journal superblock */
 	if ((retval = io_channel_read_blk64(jfs->io,
-	    ext2fs_journal_sb_start(jfs->blocksize), -SUPERBLOCK_SIZE, buf))) {
+	    ext2fs_journal_sb_start(jfs->blocksize), -EXT2_SUPERBLOCK_SIZE, buf))) {
 		com_err(program_name, retval, "%s",
 		_("while reading journal superblock"));
 		return retval;
@@ -219,7 +219,7 @@ static int remove_journal_device(ext2_filsys fs)
 {
 	char		*journal_path;
 	ext2_filsys	jfs;
-	char		buf[SUPERBLOCK_SIZE];
+	char		buf[EXT2_SUPERBLOCK_SIZE];
 	journal_superblock_t	*jsb;
 	int		i, nr_users;
 	errcode_t	retval;
@@ -283,7 +283,7 @@ static int remove_journal_device(ext2_filsys fs)
 
 	/* Write back the journal superblock */
 	if ((retval = io_channel_write_blk64(jfs->io, start,
-	    -SUPERBLOCK_SIZE, buf))) {
+	    -EXT2_SUPERBLOCK_SIZE, buf))) {
 		com_err(program_name, retval,
 			"while writing journal superblock.");
 		goto no_valid_journal;
@@ -2713,7 +2713,7 @@ retry_open:
 	if (U_flag) {
 		int set_csum = 0;
 		dgrp_t i;
-		char buf[SUPERBLOCK_SIZE];
+		char buf[EXT2_SUPERBLOCK_SIZE];
 
 		if (ext2fs_has_group_desc_csum(fs)) {
 			/*
@@ -2771,7 +2771,7 @@ retry_open:
 			/* Writeback the journal superblock */
 			if ((rc = io_channel_write_blk64(fs->io,
 				ext2fs_journal_sb_start(fs->blocksize),
-					-SUPERBLOCK_SIZE, buf)))
+					-EXT2_SUPERBLOCK_SIZE, buf)))
 				goto closefs;
 		} else if (rc != EXT2_ET_UNSUPP_FEATURE)
 			goto closefs;

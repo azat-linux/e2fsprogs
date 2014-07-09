@@ -441,7 +441,7 @@ errcode_t ext2fs_add_journal_device(ext2_filsys fs, ext2_filsys journal_dev)
 {
 	struct stat	st;
 	errcode_t	retval;
-	char		buf[SUPERBLOCK_SIZE];
+	char		buf[EXT2_SUPERBLOCK_SIZE];
 	journal_superblock_t	*jsb;
 	int		start;
 	__u32		i, nr_users;
@@ -456,7 +456,7 @@ errcode_t ext2fs_add_journal_device(ext2_filsys fs, ext2_filsys journal_dev)
 	/* Get the journal superblock */
 	start = ext2fs_journal_sb_start(journal_dev->blocksize);
 	if ((retval = io_channel_read_blk64(journal_dev->io, start,
-					    -SUPERBLOCK_SIZE,
+					    -EXT2_SUPERBLOCK_SIZE,
 					    buf)))
 		return retval;
 
@@ -483,7 +483,7 @@ errcode_t ext2fs_add_journal_device(ext2_filsys fs, ext2_filsys journal_dev)
 
 	/* Writeback the journal superblock */
 	if ((retval = io_channel_write_blk64(journal_dev->io, start,
-					    -SUPERBLOCK_SIZE, buf)))
+					    -EXT2_SUPERBLOCK_SIZE, buf)))
 		return retval;
 
 	fs->super->s_journal_inum = 0;

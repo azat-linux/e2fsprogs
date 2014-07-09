@@ -45,8 +45,8 @@ static int check_filesystem(TDB_CONTEXT *tdb, io_channel channel)
 	TDB_DATA tdb_key, tdb_data;
 	struct ext2_super_block super;
 
-	io_channel_set_blksize(channel, SUPERBLOCK_OFFSET);
-	retval = io_channel_read_blk64(channel, 1, -SUPERBLOCK_SIZE, &super);
+	io_channel_set_blksize(channel, EXT2_SUPERBLOCK_OFFSET);
+	retval = io_channel_read_blk64(channel, 1, -EXT2_SUPERBLOCK_SIZE, &super);
 	if (retval) {
 		com_err(prg_name, retval,
 			"%s", _("Failed to read the file system data \n"));

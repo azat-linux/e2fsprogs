@@ -113,8 +113,8 @@ static errcode_t write_file_system_identity(io_channel undo_channel,
 	channel = data->real;
 	block_size = channel->block_size;
 
-	io_channel_set_blksize(channel, SUPERBLOCK_OFFSET);
-	retval = io_channel_read_blk64(channel, 1, -SUPERBLOCK_SIZE, &super);
+	io_channel_set_blksize(channel, EXT2_SUPERBLOCK_OFFSET);
+	retval = io_channel_read_blk64(channel, 1, -EXT2_SUPERBLOCK_SIZE, &super);
 	if (retval)
 		goto err_out;
 
