@@ -225,8 +225,8 @@ int file_test_invalid(badblocks_list bb)
 	fs = malloc(sizeof(struct struct_ext2_filsys));
 	memset(fs, 0, sizeof(struct struct_ext2_filsys));
 	fs->magic = EXT2_ET_MAGIC_EXT2FS_FILSYS;
-	fs->super = malloc(SUPERBLOCK_SIZE);
-	memset(fs->super, 0, SUPERBLOCK_SIZE);
+	fs->super = malloc(EXT2_SUPERBLOCK_SIZE);
+	memset(fs->super, 0, EXT2_SUPERBLOCK_SIZE);
 	fs->super->s_first_data_block = 1;
 	ext2fs_blocks_count_set(fs->super, 100);
 

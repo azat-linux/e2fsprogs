@@ -164,7 +164,7 @@ errcode_t ext2fs_open2(const char *name, const char *io_options,
 		goto cleanup;
 	fs->image_io = fs->io;
 	fs->io->app_data = fs;
-	retval = io_channel_alloc_buf(fs->io, -SUPERBLOCK_SIZE, &fs->super);
+	retval = io_channel_alloc_buf(fs->io, -EXT2_SUPERBLOCK_SIZE, &fs->super);
 	if (retval)
 		goto cleanup;
 	if (flags & EXT2_FLAG_IMAGE_FILE) {
@@ -187,7 +187,7 @@ errcode_t ext2fs_open2(const char *name, const char *io_options,
 	 * If the user specifies a specific block # for the
 	 * superblock, then he/she must also specify the block size!
 	 * Otherwise, read the master superblock located at offset
-	 * SUPERBLOCK_OFFSET from the start of the partition.
+	 * EXT2_SUPERBLOCK_OFFSET from the start of the partition.
 	 *
 	 * Note: we only save a backup copy of the superblock if we
 	 * are reading the superblock from the primary superblock location.
@@ -201,19 +201,19 @@ errcode_t ext2fs_open2(const char *name, const char *io_options,
 		group_block = superblock;
 		fs->orig_super = 0;
 	} else {
-		io_channel_set_blksize(fs->io, SUPERBLOCK_OFFSET);
+		io_channel_set_blksize(fs->io, EXT2_SUPERBLOCK_OFFSET);
 		superblock = 1;
 		group_block = 0;
-		retval = ext2fs_get_mem(SUPERBLOCK_SIZE, &fs->orig_super);
+		retval = ext2fs_get_mem(EXT2_SUPERBLOCK_SIZE, &fs->orig_super);
 		if (retval)
 			goto cleanup;
 	}
-	retval = io_channel_read_blk(fs->io, superblock, -SUPERBLOCK_SIZE,
+	retval = io_channel_read_blk(fs->io, superblock, -EXT2_SUPERBLOCK_SIZE,
 				     fs->super);
 	if (retval)
 		goto cleanup;
 	if (fs->orig_super)
-		memcpy(fs->orig_super, fs->super, SUPERBLOCK_SIZE);
+		memcpy(fs->orig_super, fs->super, EXT2_SUPERBLOCK_SIZE);
 
 	if (!(fs->flags & EXT2_FLAG_IGNORE_CSUM_ERRORS)) {
 		retval = 0;

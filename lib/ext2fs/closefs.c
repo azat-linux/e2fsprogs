@@ -199,8 +199,8 @@ static errcode_t write_primary_superblock(ext2_filsys fs,
 
 	if (!fs->io->manager->write_byte || !fs->orig_super) {
 	fallback:
-		io_channel_set_blksize(fs->io, SUPERBLOCK_OFFSET);
-		retval = io_channel_write_blk64(fs->io, 1, -SUPERBLOCK_SIZE,
+		io_channel_set_blksize(fs->io, EXT2_SUPERBLOCK_OFFSET);
+		retval = io_channel_write_blk64(fs->io, 1, -EXT2_SUPERBLOCK_SIZE,
 					      super);
 		io_channel_set_blksize(fs->io, fs->blocksize);
 		return retval;
@@ -209,11 +209,11 @@ static errcode_t write_primary_superblock(ext2_filsys fs,
 	old_super = (__u16 *) fs->orig_super;
 	new_super = (__u16 *) super;
 
-	for (check_idx = 0; check_idx < SUPERBLOCK_SIZE/2; check_idx++) {
+	for (check_idx = 0; check_idx < EXT2_SUPERBLOCK_SIZE/2; check_idx++) {
 		if (old_super[check_idx] == new_super[check_idx])
 			continue;
 		write_idx = check_idx;
-		for (check_idx++; check_idx < SUPERBLOCK_SIZE/2; check_idx++)
+		for (check_idx++; check_idx < EXT2_SUPERBLOCK_SIZE/2; check_idx++)
 			if (old_super[check_idx] == new_super[check_idx])
 				break;
 		size = 2 * (check_idx - write_idx);
@@ -222,14 +222,14 @@ static errcode_t write_primary_superblock(ext2_filsys fs,
 		       size, write_idx*2);
 #endif
 		retval = io_channel_write_byte(fs->io,
-			       SUPERBLOCK_OFFSET + (2 * write_idx), size,
+			       EXT2_SUPERBLOCK_OFFSET + (2 * write_idx), size,
 					       new_super + write_idx);
 		if (retval == EXT2_ET_UNIMPLEMENTED)
 			goto fallback;
 		if (retval)
 			return retval;
 	}
-	memcpy(fs->orig_super, super, SUPERBLOCK_SIZE);
+	memcpy(fs->orig_super, super, EXT2_SUPERBLOCK_SIZE);
 	return 0;
 }
 
@@ -269,7 +269,7 @@ static errcode_t write_backup_super(ext2_filsys fs, dgrp_t group,
 	if (retval)
 		return retval;
 
-	return io_channel_write_blk64(fs->io, group_block, -SUPERBLOCK_SIZE,
+	return io_channel_write_blk64(fs->io, group_block, -EXT2_SUPERBLOCK_SIZE,
 				    super_shadow);
 }
 
@@ -320,7 +320,7 @@ errcode_t ext2fs_flush2(ext2_filsys fs, int flags)
 	/* Prepare the group descriptors for writing */
 #ifdef WORDS_BIGENDIAN
 	retval = EXT2_ET_NO_MEMORY;
-	retval = ext2fs_get_mem(SUPERBLOCK_SIZE, &super_shadow);
+	retval = ext2fs_get_mem(EXT2_SUPERBLOCK_SIZE, &super_shadow);
 	if (retval)
 		goto errout;
 	retval = ext2fs_get_array(fs->desc_blocks, fs->blocksize,
@@ -412,7 +412,7 @@ write_primary_superblock_only:
 	/*
 	 * Write out master superblock.  This has to be done
 	 * separately, since it is located at a fixed location
-	 * (SUPERBLOCK_OFFSET).  We flush all other pending changes
+	 * (EXT2_SUPERBLOCK_OFFSET).  We flush all other pending changes
 	 * out to disk first, just to avoid a race condition with an
 	 * insy-tinsy window....
 	 */

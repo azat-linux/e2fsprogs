@@ -53,15 +53,15 @@ errcode_t ext2fs_dup_handle(ext2_filsys src, ext2_filsys *dest)
 		goto errout;
 	strcpy(fs->device_name, src->device_name);
 
-	retval = ext2fs_get_mem(SUPERBLOCK_SIZE, &fs->super);
+	retval = ext2fs_get_mem(EXT2_SUPERBLOCK_SIZE, &fs->super);
 	if (retval)
 		goto errout;
-	memcpy(fs->super, src->super, SUPERBLOCK_SIZE);
+	memcpy(fs->super, src->super, EXT2_SUPERBLOCK_SIZE);
 
-	retval = ext2fs_get_mem(SUPERBLOCK_SIZE, &fs->orig_super);
+	retval = ext2fs_get_mem(EXT2_SUPERBLOCK_SIZE, &fs->orig_super);
 	if (retval)
 		goto errout;
-	memcpy(fs->orig_super, src->orig_super, SUPERBLOCK_SIZE);
+	memcpy(fs->orig_super, src->orig_super, EXT2_SUPERBLOCK_SIZE);
 
 	retval = ext2fs_get_array(fs->desc_blocks, fs->blocksize,
 				&fs->group_desc);

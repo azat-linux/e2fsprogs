@@ -2398,8 +2398,8 @@ static int should_do_undo(const char *name)
 		goto open_err_out;
 	}
 
-	io_channel_set_blksize(channel, SUPERBLOCK_OFFSET);
-	retval = io_channel_read_blk64(channel, 1, -SUPERBLOCK_SIZE, &super);
+	io_channel_set_blksize(channel, EXT2_SUPERBLOCK_OFFSET);
+	retval = io_channel_read_blk64(channel, 1, -EXT2_SUPERBLOCK_SIZE, &super);
 	if (retval) {
 		retval = 0;
 		goto err_out;
