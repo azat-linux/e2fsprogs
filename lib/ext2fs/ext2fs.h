@@ -36,8 +36,14 @@ extern "C" {
  * (some versions have the padding set up so that the superblock is
  * 1032 bytes long).
  */
-#define SUPERBLOCK_OFFSET	1024
-#define SUPERBLOCK_SIZE		1024
+#define EXT2_SUPERBLOCK_OFFSET	1024
+#define EXT2_SUPERBLOCK_SIZE		1024
+/**
+ * Deprecated, will be removed in the next release
+ * Instead use EXT2_* with the same names.
+ */
+#define SUPERBLOCK_OFFSET EXT2_SUPERBLOCK_OFFSET
+#define SUPERBLOCK_SIZE EXT2_SUPERBLOCK_SIZE
 
 /*
  * The last ext2fs revision level that this version of the library is

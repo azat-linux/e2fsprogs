@@ -540,7 +540,7 @@ blk64_t get_backup_sb(e2fsck_t ctx, ext2_filsys fs, const char *name,
 	if (manager->open(name, 0, &io) != 0)
 		goto cleanup;
 
-	if (ext2fs_get_mem(SUPERBLOCK_SIZE, &buf))
+	if (ext2fs_get_mem(EXT2_SUPERBLOCK_SIZE, &buf))
 		goto cleanup;
 	sb = (struct ext2_super_block *) buf;
 
@@ -551,7 +551,7 @@ blk64_t get_backup_sb(e2fsck_t ctx, ext2_filsys fs, const char *name,
 			superblock++;
 		io_channel_set_blksize(io, blocksize);
 		if (io_channel_read_blk64(io, superblock,
-					-SUPERBLOCK_SIZE, buf))
+					-EXT2_SUPERBLOCK_SIZE, buf))
 			continue;
 #ifdef WORDS_BIGENDIAN
 		if (sb->s_magic == ext2fs_swab16(EXT2_SUPER_MAGIC))

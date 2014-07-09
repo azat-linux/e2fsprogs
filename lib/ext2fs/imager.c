@@ -203,7 +203,7 @@ errcode_t ext2fs_image_super_write(ext2_filsys fs, int fd,
 	 * Write out the superblock
 	 */
 	memset(buf, 0, fs->blocksize);
-	memcpy(buf, fs->super, SUPERBLOCK_SIZE);
+	memcpy(buf, fs->super, EXT2_SUPERBLOCK_SIZE);
 	actual = write(fd, buf, fs->blocksize);
 	if (actual == -1) {
 		retval = errno;
@@ -266,7 +266,7 @@ errcode_t ext2fs_image_super_read(ext2_filsys fs, int fd,
 	/*
 	 * Now copy in the superblock and group descriptors
 	 */
-	memcpy(fs->super, buf, SUPERBLOCK_SIZE);
+	memcpy(fs->super, buf, EXT2_SUPERBLOCK_SIZE);
 
 	memcpy(fs->group_desc, buf + fs->blocksize,
 	       fs->blocksize * fs->group_desc_count);

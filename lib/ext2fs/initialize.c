@@ -133,12 +133,12 @@ errcode_t ext2fs_initialize(const char *name, int flags,
 		goto cleanup;
 
 	strcpy(fs->device_name, name);
-	retval = ext2fs_get_mem(SUPERBLOCK_SIZE, &super);
+	retval = ext2fs_get_mem(EXT2_SUPERBLOCK_SIZE, &super);
 	if (retval)
 		goto cleanup;
 	fs->super = super;
 
-	memset(super, 0, SUPERBLOCK_SIZE);
+	memset(super, 0, EXT2_SUPERBLOCK_SIZE);
 
 #define set_field(field, default) (super->field = param->field ? \
 				   param->field : (default))

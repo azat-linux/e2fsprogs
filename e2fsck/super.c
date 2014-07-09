@@ -921,7 +921,7 @@ int check_backup_super_block(e2fsck_t ctx)
 	dgrp_t		g;
 	blk64_t		sb;
 	int		ret = 0;
-	char		buf[SUPERBLOCK_SIZE];
+	char		buf[EXT2_SUPERBLOCK_SIZE];
 	struct ext2_super_block	*backup_sb;
 
 	/*
@@ -944,7 +944,7 @@ int check_backup_super_block(e2fsck_t ctx)
 
 		sb = ext2fs_group_first_block2(fs, g);
 
-		retval = io_channel_read_blk(fs->io, sb, -SUPERBLOCK_SIZE,
+		retval = io_channel_read_blk(fs->io, sb, -EXT2_SUPERBLOCK_SIZE,
 					     buf);
 		if (retval)
 			continue;
