@@ -45,6 +45,8 @@ extern "C" {
 #define SUPERBLOCK_OFFSET EXT2_SUPERBLOCK_OFFSET
 #define SUPERBLOCK_SIZE EXT2_SUPERBLOCK_SIZE
 
+#define UUID_STR_SIZE 37
+
 /*
  * The last ext2fs revision level that this version of the library is
  * able to support.
