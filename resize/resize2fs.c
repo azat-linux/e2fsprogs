@@ -2479,7 +2479,8 @@ blk64_t calculate_minimum_resize_size(ext2_filsys fs, int flags)
 		extra_grps = ext2fs_div64_ceil(remainder,
 					       EXT2_BLOCKS_PER_GROUP(fs->super));
 
-		data_blocks += extra_grps * EXT2_BLOCKS_PER_GROUP(fs->super);
+		data_blocks += (unsigned long long)extra_grps *
+			EXT2_BLOCKS_PER_GROUP(fs->super);
 
 		/* ok we have to account for the last group */
 		overhead = calc_group_overhead(fs, groups-1, old_desc_blocks);
